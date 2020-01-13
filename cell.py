@@ -1,4 +1,5 @@
 import pygame
+import math
 class cell:
 
     """Docstring for cell. """
@@ -15,7 +16,9 @@ class cell:
         self.start = False
         self.end = False;
         self.step =0
-        self.h = 40 - x + 30 -y
+        self.row = int((y -2)/20)
+        self.column = int((x-2)/20)
+        self.h = 1.8 *math.sqrt(pow(40 - self.column, 2) +pow( 30 - self.row,2))
         self.f = self.h + self.step 
         self.pre = None
 

@@ -31,21 +31,23 @@ def createCells():
 
     for j in range(30):
         for i in range(40):
-            
             cells.append(cell.cell(i*20+2, j* 20+2, size, color, screen))
 
+start = None
+end = None
 def initGame():
-  cells[0].SetStart()
-  cells[-1].SetEnd()
-  #random some blocks
-  for c in cells[1:-2]:
-      if random.randint(1,3)  == 2 :
-         c.SetBlock() 
+    global start
+    global end
+    start = cells[205]
+    end = cells[830]
+
+    start.SetStart()
+    end.SetEnd()
 
 found = False
 def ShowPath():
-    c = cells[-1]
-    while c is not cells[0]:
+    c = end
+    while c is not start:
         c = c.pre
         c.color = (0,255,0)
 def checknode(index,o):
@@ -102,17 +104,28 @@ def move():
 # initialize cells
 createCells()
 initGame()
-print(len(cells))
-open.append(cells[0])
+open.append(start)
 
+
+print("Edit mode")
+edit = True
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
-
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_s:
+                edit = False
+                print("Start")
+    if edit and pygame.mouse.get_pressed()[0]:
+        pos = pygame.mouse.get_pos()
+        x = int(pos[0]/20)
+        y = int(pos[1]/20)
+        if x >= 0 and x <40 and y >=0 and y< 30:
+            cells[40*y +x].SetBlock()
     screen.fill((255, 255, 255))
-    if not found:
+    if not found and not edit:
         move()
     updateGUI()
     pygame.display.flip()
-    clock.tick(30)
+    clock.tick(60)
