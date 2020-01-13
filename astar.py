@@ -42,12 +42,26 @@ def initGame():
       if random.randint(1,4)  == 3 :
          c.SetBlock() 
 
+found = false
+def move():
+    if found: 
+        return
+    if(len(open) == 0):
+        return
+    
+    o=open[0]
+    for c in open:
+        if c.f < o.f:
+            o = c
+
 
 
 # initialize cells
 createCells()
 initGame()
 
+
+open.append(cells[0])
 
 while not done:
     for event in pygame.event.get():

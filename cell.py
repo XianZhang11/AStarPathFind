@@ -14,6 +14,9 @@ class cell:
         self.block = False
         self.start = False
         self.end = False;
+        self.step =0
+        self.h = 40 - x + 30 -y
+        self.f = h
 
     def draw(self):
         pygame.draw.rect(self.screen, self.color, (self.x,self.y,self.size,self.size));
