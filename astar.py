@@ -6,8 +6,14 @@ import cell as cell
 width = 800
 height = 600
 
+column = 40
+row = 30
+blockSize = 20
+
 pygame.init()
 screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption('Astar demo')
+
 done = False
 clock = pygame.time.Clock()
 
@@ -27,19 +33,19 @@ def updateGUI():
 
 def createCells():
     color = (0,0,0)
-    size = 16
 
-    for j in range(30):
-        for i in range(40):
-            cells.append(cell.cell(i*20+2, j* 20+2, size, color, screen))
+
+    for j in range(row):
+        for i in range(column):
+            cells.append(cell.cell(i*blockSize, j* blockSize, blockSize, color, screen))
 
 start = None
 end = None
 def initGame():
     global start
     global end
-    start = cells[205]
-    end = cells[830]
+    start = cells[5*column+5] #(5,5)
+    end = cells[20*column + 30] #(30,20)
 
     start.SetStart()
     end.SetEnd()
@@ -73,7 +79,7 @@ def checknode(index,o):
 def move():
     if(len(open) == 0):
         return
-    
+    # find smallest node    
     o=open[0]
     for c in open:
         if c.f < o.f:
@@ -82,19 +88,19 @@ def move():
     open.remove(o)
     # 4 possible moves
     index = 0;
-    x = int((o.x -2 )/20)
-    y = int((o.y -2) /20)
+    x = int((o.x )/blockSize)
+    y = int((o.y ) /blockSize)
     if x > 0:
-        index = y*40 + x -1
+        index = y*column + x -1
         checknode(index, o)
-    if(x< 40 -1):
-        index = y*40 +x +1
+    if(x< column -1):
+        index = y*column +x +1
         checknode(index, o)
     if y > 0:
-        index = 40 * (y -1) +x
+        index = column * (y -1) +x
         checknode(index, o)
-    if y < 30 -1:
-        index = 40 * ( y+1) + x
+    if y < row -1:
+        index = column * ( y+1) + x
         checknode(index, o)
 
     if not found:
@@ -117,12 +123,13 @@ while not done:
             if event.key == pygame.K_s:
                 edit = False
                 print("Start")
+
     if edit and pygame.mouse.get_pressed()[0]:
         pos = pygame.mouse.get_pos()
-        x = int(pos[0]/20)
-        y = int(pos[1]/20)
-        if x >= 0 and x <40 and y >=0 and y< 30:
-            cells[40*y +x].SetBlock()
+        x = int(pos[0]/blockSize)
+        y = int(pos[1]/blockSize)
+        if x >= 0 and x <column and y >=0 and y< row and not cells[column*y +x].start and not cells[column*y+x].end:
+            cells[column*y +x].SetBlock()
     screen.fill((255, 255, 255))
     if not found and not edit:
         move()
