@@ -16,7 +16,8 @@ class cell:
         self.end = False;
         self.step =0
         self.h = 40 - x + 30 -y
-        self.f = h
+        self.f = self.h + self.step 
+        self.pre = None
 
     def draw(self):
         pygame.draw.rect(self.screen, self.color, (self.x,self.y,self.size,self.size));
@@ -32,3 +33,7 @@ class cell:
     def SetEnd(self):
         self.color = (0,0,255)
         self.end = True
+    def SetPre(self,  pre):
+        self.pre = pre
+        self.step = pre.step +1
+        self.f = self.h + self.step
