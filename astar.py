@@ -1,8 +1,13 @@
 import pygame
+import random
 import cell as cell
 
+
+width = 800
+height = 600
+
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((width, height))
 done = False
 clock = pygame.time.Clock()
 
@@ -12,10 +17,38 @@ opon =[]
 
 close = []
 
+    
 
 def updateGUI():
 
-    pass
+    for c in cells:
+        c.draw()
+
+
+def createCells():
+    color = (0,0,0)
+    size = 16
+
+    for i in range(40):
+        for j in range(30):
+            
+            cells.append(cell.cell(i*20+2, j* 20+2, size, color, screen))
+
+def initGame():
+  cells[0].SetStart()
+  cells[-1].SetEnd()
+  #random some blocks
+  for c in cells[1:-2]:
+      if random.randint(1,4)  == 3 :
+         c.SetBlock() 
+
+
+
+# initialize cells
+createCells()
+initGame()
+
+
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
