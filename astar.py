@@ -33,8 +33,6 @@ def updateGUI():
 
 def createCells():
     color = (0,0,0)
-
-
     for j in range(row):
         for i in range(column):
             cells.append(cell.cell(i*blockSize, j* blockSize, blockSize, color, screen))
